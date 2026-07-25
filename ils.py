@@ -1,35 +1,6 @@
 """
 ils.py
 ------
-Motor de otimização: heurística construtiva + VND (intra e entre rotas) + ILS.
-
-*** A LÓGICA DESTE ARQUIVO É A MESMA DO NOTEBOOK ORIGINAL. ***
-
-As únicas mudanças em relação ao código original foram as estritamente
-necessárias para tirar a dependência de variáveis globais e permitir a
-integração com o Streamlit:
-
-1. Todas as funções passaram a receber `dem`, `cap_max`, `tempo_max` etc.
-   como parâmetros em vez de lerem variáveis globais do notebook
-   (isso já valia para a maioria das funções de vizinhança; a exceção era
-   `Perturbacao`, que foi ajustada da mesma forma).
-2. Os `print()` de acompanhamento passo a passo foram substituídos por
-   `log.append(...)` (uma lista opcional passada por parâmetro), pois o
-   Streamlit não exibe saída de console. Nenhuma condição de parada, ordem
-   de vizinhança ou critério de aceitação foi alterado.
-3. O carregamento de demandas via planilha Excel (openpyxl) foi removido,
-   pois a interface agora fornece `dem` diretamente (montado em dados.py a
-   partir dos clientes cadastrados).
-4. Mantive as DUAS versões da busca local entre rotas que existiam no
-   notebook original — `vnd_entre_rotas` (usada antes do ILS) e
-   `vnd_entre_rotas_ils` (usada dentro do laço do ILS) — porque elas têm
-   pequenas diferenças de controle de fluxo no código original (a primeira
-   reinicia a varredura a partir da rota `a` após uma melhora; a segunda
-   não). Unificá-las mudaria o comportamento do algoritmo, o que não foi
-   pedido.
-
-Nenhuma fórmula de custo, critério de viabilidade (capacidade/tempo) ou
-critério de aceitação/parada foi modificado.
 """
 
 import copy
