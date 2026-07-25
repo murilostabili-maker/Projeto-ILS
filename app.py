@@ -1,10 +1,7 @@
 """
 app.py
 ------
-Interface Streamlit. Este arquivo NÃO contém lógica de otimização — ele
-apenas coleta o depósito e os clientes, monta a instância do problema,
-chama ils.rodar_algoritmo_completo() (o motor original, inalterado) e exibe
-o resultado (mapa Folium + métricas).
+Interface Streamlit. .
 """
 
 import math as mt
@@ -40,11 +37,9 @@ if "mapa_path" not in st.session_state:
 if "tempo_execucao" not in st.session_state:
     st.session_state.tempo_execucao = None
 
-st.title("🚚 Roteirização de Veículos com ILS")
+st.title("Roteirização de Veículos com ILS")
 st.caption(
-    "Interface para o projeto de Pesquisa Operacional (heurística construtiva "
-    "+ VND + Iterated Local Search). O algoritmo de otimização não foi alterado."
-)
+    "Interface para o projeto de Pesquisa Operacional")
 
 # ---------------------------------------------------------------------------
 # Sidebar: parâmetros do algoritmo
@@ -61,13 +56,8 @@ with st.sidebar:
     total_demanda = sum(c.demanda for c in st.session_state.clientes)
     veiculos_sugeridos = mt.ceil(total_demanda / cap_max) if total_demanda > 0 else 0
     st.metric("Demanda total cadastrada", total_demanda)
-    st.metric("Nº de veículos sugerido (informativo)", veiculos_sugeridos)
-    st.caption(
-        "O algoritmo original não recebe 'número de veículos' como limite — ele "
-        "cria quantas rotas forem necessárias respeitando apenas a capacidade e "
-        "o tempo máximo definidos acima. Este número é só uma estimativa "
-        "(demanda total ÷ capacidade), exibida para referência."
-    )
+    st.metric("Nº de Rotas necessárias", veiculos_sugeridos)
+
 
 # ---------------------------------------------------------------------------
 # 1. Depósito
@@ -250,7 +240,7 @@ if st.session_state.resultado:
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Custo total", f"{round(resultado['custo_final'], 1)} km")
-    c2.metric("Veículos utilizados", resultado["num_rotas"])
+    c2.metric("Rotas necessárias", resultado["num_rotas"])
     c3.metric("Tempo de execução", f"{st.session_state.tempo_execucao:.1f}s")
     c4.metric("Clientes atendidos", len(st.session_state.clientes))
 
