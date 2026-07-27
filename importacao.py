@@ -31,9 +31,9 @@ def gerar_template_bytes() -> bytes:
 
     instrucoes = (
         "Preencha uma linha por cliente abaixo do cabeçalho (linha 4). "
-        "'nome' e 'demanda' são obrigatórios. Para localizar o cliente, preencha OU "
-        "'endereco' OU 'latitude' + 'longitude' (se latitude/longitude estiverem "
-        "preenchidas, o endereço é ignorado e nenhuma busca é feita). "
+        "'nome' e 'demanda' são obrigatórios. Para localizar o cliente, preencha ou "
+        "'endereco' ou 'latitude' + 'longitude' (se latitude/longitude estiverem "
+        "preenchidas, o endereço é ignorado). "
         "Apague as linhas de exemplo antes de importar."
     )
     ws.merge_cells("A1:E3")
