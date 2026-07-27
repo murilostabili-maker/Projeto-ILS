@@ -11,6 +11,7 @@ import pandas as pd
 import streamlit as st
 
 import ils
+import importacao
 import mapa as mapa_mod
 import osm
 from dados import Cliente, Deposito, construir_coordenadas, construir_dem
@@ -169,6 +170,48 @@ with col_cli1:
 with col_cli2:
     st.metric("Clientes cadastrados", len(st.session_state.clientes))
 
+with st.expander("📥 Importar clientes em lote (CSV/Excel)"):
+    st.write(
+        "Baixe a planilha modelo, preencha uma linha por cliente e envie de volta. "
+        "Cada linha precisa de **nome** e **demanda**, e OU **endereco** OU "
+        "**latitude** + **longitude**."
+    )
+    st.download_button(
+        "📄 Baixar planilha modelo (.xlsx)",
+        data=importacao.gerar_template_bytes(),
+        file_name="modelo_clientes.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key="btn_download_template",
+    )
+
+    arquivo_importado = st.file_uploader(
+        "Enviar planilha preenchida (.csv ou .xlsx)", type=["csv", "xlsx", "xls"], key="upload_clientes"
+    )
+
+    if arquivo_importado is not None and st.button("Processar planilha", key="btn_processar_planilha"):
+        try:
+            df_importado = importacao.ler_planilha(arquivo_importado)
+        except ValueError as e:
+            st.error(str(e))
+        else:
+            with st.spinner("Processando linhas (geocodificando endereços quando necessário)..."):
+                novos_clientes, erros_importacao = importacao.processar_linhas(
+                    df_importado, st.session_state.proximo_id
+                )
+
+            if novos_clientes:
+                st.session_state.clientes.extend(novos_clientes)
+                st.session_state.proximo_id += len(novos_clientes)
+                st.success(f"{len(novos_clientes)} cliente(s) importado(s) com sucesso.")
+
+            if erros_importacao:
+                st.warning(f"{len(erros_importacao)} linha(s) com problema (ignoradas):")
+                for msg in erros_importacao:
+                    st.text(f"• {msg}")
+
+            if novos_clientes:
+                st.rerun()
+                
 if st.session_state.clientes:
     df_clientes = pd.DataFrame(
         [
