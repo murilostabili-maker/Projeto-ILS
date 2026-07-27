@@ -174,7 +174,7 @@ with st.expander("📥 Importar clientes em lote (CSV/Excel)"):
     st.write(
         "Baixe a planilha modelo, preencha uma linha por cliente e envie de volta. "
         "Cada linha precisa de **nome** e **demanda**"
-        "Preenchendo ou **endereco** ou **latitude** + **longitude**."
+        ", Preenchendo ou **endereco** ou **latitude** + **longitude**."
     )
     st.download_button(
         "📄 Baixar planilha modelo (.xlsx)",
