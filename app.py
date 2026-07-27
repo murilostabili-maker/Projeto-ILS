@@ -184,6 +184,26 @@ if st.session_state.clientes:
     )
     st.dataframe(df_clientes, use_container_width=True, hide_index=True)
 
+    with st.expander("✏️ Editar cliente"):
+        id_editar = st.selectbox(
+            "Selecione o cliente",
+            options=[c.id for c in st.session_state.clientes],
+            format_func=lambda i: next(c.nome for c in st.session_state.clientes if c.id == i),
+            key="id_editar_cliente",
+        )
+        cliente_atual = next(c for c in st.session_state.clientes if c.id == id_editar)
+
+        novo_nome = st.text_input("Nome", value=cliente_atual.nome, key=f"editar_nome_{id_editar}")
+        nova_demanda = st.number_input(
+            "Demanda", min_value=0, value=cliente_atual.demanda, step=1, key=f"editar_demanda_{id_editar}"
+        )
+
+        if st.button("Salvar alterações", key="btn_salvar_edicao"):
+            cliente_atual.nome = novo_nome
+            cliente_atual.demanda = int(nova_demanda)
+            st.success(f"Cliente '{novo_nome}' atualizado.")
+            st.rerun()
+
     ids_remover = st.multiselect(
         "Selecionar clientes para remover",
         options=[c.id for c in st.session_state.clientes],
