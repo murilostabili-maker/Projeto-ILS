@@ -58,6 +58,21 @@ with st.sidebar:
     st.metric("Demanda total cadastrada", total_demanda)
     st.metric("Nº de Rotas necessárias", veiculos_sugeridos)
 
+    st.divider()
+    with st.expander("🗑️ Limpar tudo"):
+        st.warning("Isso apaga o depósito, todos os clientes e o resultado gerado. Não pode ser desfeito.")
+        if st.button("Confirmar limpeza", key="btn_limpar_tudo", type="primary", use_container_width=True):
+            st.session_state.deposito = None
+            st.session_state.clientes = []
+            st.session_state.proximo_id = 1
+            st.session_state.resultado_busca_deposito = []
+            st.session_state.resultado_busca_cliente = []
+            st.session_state.resultado = None
+            st.session_state.mapa_path = None
+            st.session_state.tempo_execucao = None
+            st.success("Tudo foi limpo.")
+            st.rerun()
+
 
 # ---------------------------------------------------------------------------
 # 1. Depósito
