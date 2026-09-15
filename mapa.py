@@ -39,7 +39,11 @@ def gerar_mapa(
     matriz de distâncias/tempos (é essa ordem que define o índice de nó
     1..n usado em `melhor_solucao`, `distancia`, `tempo` e `dem`).
     """
-    mapa = folium.Map(location=[deposito.latitude, deposito.longitude], zoom_start=13)
+    mapa = folium.Map(
+    location=[deposito.latitude, deposito.longitude],
+    zoom_start=13,
+    tiles="cartodbpositron",
+)
 
     folium.Marker(
         location=[deposito.latitude, deposito.longitude],
