@@ -42,8 +42,9 @@ def gerar_mapa(
     mapa = folium.Map(
     location=[deposito.latitude, deposito.longitude],
     zoom_start=13,
-    tiles="cartodbpositron",
-)
+    tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    attr="Esri",
+
 
     folium.Marker(
         location=[deposito.latitude, deposito.longitude],
