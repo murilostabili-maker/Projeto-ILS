@@ -40,10 +40,11 @@ def gerar_mapa(
     1..n usado em `melhor_solucao`, `distancia`, `tempo` e `dem`).
     """
     mapa = folium.Map(
-    location=[deposito.latitude, deposito.longitude],
-    zoom_start=13,
-    tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-    attr="Esri",
+        location=[deposito.latitude, deposito.longitude],
+        zoom_start=13,
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        attr="Esri",
+    )
 
 
     folium.Marker(
